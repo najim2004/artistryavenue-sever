@@ -54,10 +54,56 @@ async function run() {
       res.send(single_art_and_craft);
     });
 
+    // delete single craft data from the database
+    app.delete("/all_art_and_craft/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await craftCollection.deleteOne({
+        _id: new ObjectId(id),
+      });
+      res.send(result);
+    });
+
     // post craft data to the database
     app.post("/all_art_and_craft", async (req, res) => {
       const new_art_and_craft = req.body;
       const result = await craftCollection.insertOne(new_art_and_craft);
+      res.send(result);
+    });
+
+    // put a new item in the database
+    app.put("/all_art_and_craft/:id", async (req, res) => {
+      const id = req.params.id;
+      const item = req.body;
+      const updatedItem = {
+        $set: {
+          user_name: item?.user_name,
+          user_email: item?.user_email,
+          item_name: item?.item_name,
+          subcategory_Name: item?.subcategory_Name,
+          description: item?.description,
+          image: item?.image,
+          processing_time: item?.processing_time,
+          Price: item?.Price,
+          rating: item?.rating,
+          customization: item?.customization,
+          stockStatus: item?.stockStatus,
+        },
+      };
+      const result = await craftCollection.updateOne(
+        {
+          _id: new ObjectId(id),
+        },
+        updatedItem
+      );
+      res.send(result);
+    });
+
+    // find all post by email address
+    app.get("/my_art_&_craft_list/:email", async (req, res) => {
+      const email = req.params.email;
+      const result = await craftCollection
+        .find({ user_email: email })
+        .toArray();
       res.send(result);
     });
 
