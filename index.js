@@ -54,6 +54,13 @@ async function run() {
       res.send(single_art_and_craft);
     });
 
+    // post craft data to the database
+    app.post("/all_art_and_craft", async (req, res) => {
+      const new_art_and_craft = req.body;
+      const result = await craftCollection.insertOne(new_art_and_craft);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
