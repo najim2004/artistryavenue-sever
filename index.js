@@ -38,7 +38,13 @@ async function run() {
     // await client.connect();
     const database = client.db("Art_and_craft_DB");
     const craftCollection = database.collection("All_Art_and_craft");
+    const reviewCollection = database.collection("Review");
 
+    // get all review data from the database
+    app.get("/review", async (req, res) => {
+      const all_art_and_craft = await reviewCollection.find().toArray();
+      res.send(all_art_and_craft);
+    });
     // get all craft data from the database
     app.get("/all_art_and_craft", async (req, res) => {
       const all_art_and_craft = await craftCollection.find().toArray();
