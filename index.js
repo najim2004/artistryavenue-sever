@@ -36,9 +36,12 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
+
+    // All collections
     const database = client.db("Art_and_craft_DB");
     const craftCollection = database.collection("All_Art_and_craft");
     const reviewCollection = database.collection("Review");
+    const categoriesCollection = database.collection("Sub_Categories");
 
     // get all review data from the database
     app.get("/review", async (req, res) => {
@@ -111,6 +114,12 @@ async function run() {
         .find({ user_email: email })
         .toArray();
       res.send(result);
+    });
+
+    // get all categories
+    app.get("/categories", async (req, res) => {
+      const all_categories = await categoriesCollection.find().toArray();
+      res.send(all_categories);
     });
 
     // Send a ping to confirm a successful connection
