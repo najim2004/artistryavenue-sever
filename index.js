@@ -42,17 +42,25 @@ async function run() {
     const craftCollection = database.collection("All_Art_and_craft");
     const reviewCollection = database.collection("Review");
     const categoriesCollection = database.collection("Sub_Categories");
+    const adminCollection = database.collection("Sub_Categories");
+
+
 
     // get all review data from the database
     app.get("/review", async (req, res) => {
       const all_art_and_craft = await reviewCollection.find().toArray();
       res.send(all_art_and_craft);
     });
+
+
+
     // get all craft data from the database
     app.get("/all_art_and_craft", async (req, res) => {
       const all_art_and_craft = await craftCollection.find().toArray();
       res.send(all_art_and_craft);
     });
+
+
 
     // get single craft data from the database
     app.get("/all_art_and_craft/:id", async (req, res) => {
@@ -63,6 +71,7 @@ async function run() {
       res.send(single_art_and_craft);
     });
 
+
     // delete single craft data from the database
     app.delete("/all_art_and_craft/:id", async (req, res) => {
       const id = req.params.id;
@@ -72,12 +81,16 @@ async function run() {
       res.send(result);
     });
 
+
+
     // post craft data to the database
     app.post("/all_art_and_craft", async (req, res) => {
       const new_art_and_craft = req.body;
       const result = await craftCollection.insertOne(new_art_and_craft);
       res.send(result);
     });
+
+
 
     // put a new item in the database
     app.put("/all_art_and_craft/:id", async (req, res) => {
@@ -107,6 +120,8 @@ async function run() {
       res.send(result);
     });
 
+
+
     // find all post by email address
     app.get("/my_art_&_craft_list/:email", async (req, res) => {
       const email = req.params.email;
@@ -116,11 +131,15 @@ async function run() {
       res.send(result);
     });
 
+
+
     // get all categories
     app.get("/categories", async (req, res) => {
       const all_categories = await categoriesCollection.find().toArray();
       res.send(all_categories);
     });
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
